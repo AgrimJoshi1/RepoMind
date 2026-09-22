@@ -31,12 +31,12 @@ def get_repository_metadata(owner:str,repository:str)->dict:
 
     response = httpx.get(url,timeout=10)
 
-    if respone.status_code == 404:
+    if response.status_code == 404:
         raise ValueError("Github repository not found")
 
     response.raise_for_status()
 
-    data = respone.json()
+    data = response.json()
 
     return {
         "name":data["name"],

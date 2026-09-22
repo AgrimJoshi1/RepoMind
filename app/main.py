@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 
+from app.api.routes import router
+
 app = FastAPI(
     title = "RepoMind",
     description = "Backend API for analyzing Github Repo",
@@ -13,3 +15,5 @@ def health_check():
         "service":"RepoMind"
 
     }
+
+app.include_router(router)

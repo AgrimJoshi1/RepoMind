@@ -1,4 +1,7 @@
+import httpx
 from urllib.parse import urlparse
+
+GITHUB_API_URL = "https://api.github.com"
 
 def parse_github_url(github_url:str)->tuple[str,str]:
     parsed_url = urlparse(github_url)
@@ -22,3 +25,41 @@ def parse_github_url(github_url:str)->tuple[str,str]:
         repository = repository[:-4]
 
     return owner,repository
+
+def get_repository_metdata(owner:str,repository:str)->dict:
+    url = f"{GITHUB_API_URL}/repos/{owner}/{repository}"
+
+    response = httpx.get(url,timeout=10)
+
+    if respone.status_code == 404:
+        raise ValueError("Github repository not found")
+
+    response.raise_for_status()
+
+    data = respone.json()
+
+    return {
+        "name":data["name"],
+        "full_name":data["full_name"],
+        "description":data["description"],
+        "default_branch":data["default_branch"],
+        "language":data["language"]
+    }
+
+def get_repository_tree(owner: str,repository: str,branch: str) -> list[dict]:
+    url = (
+        f"{GITHUB_API_URL}/repos/"
+        f"{owner}/{repository}/git/trees/{branch}"
+        "?recursive=1"
+    )
+    respone = httpx.get(url,timeout = 20)
+
+    if respone.status_code == 404:
+        raise ValueError("Repository tree not found")
+
+    respone.raise_for_status()
+
+    data = respone.json()
+
+    return data.get("tree",[])
+    

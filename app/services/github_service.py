@@ -26,7 +26,7 @@ def parse_github_url(github_url:str)->tuple[str,str]:
 
     return owner,repository
 
-def get_repository_metdata(owner:str,repository:str)->dict:
+def get_repository_metadata(owner:str,repository:str)->dict:
     url = f"{GITHUB_API_URL}/repos/{owner}/{repository}"
 
     response = httpx.get(url,timeout=10)

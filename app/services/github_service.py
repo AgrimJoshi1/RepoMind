@@ -1,5 +1,6 @@
 import httpx
 from urllib.parse import urlparse
+import base64
 
 GITHUB_API_URL = "https://api.github.com"
 
@@ -62,4 +63,19 @@ def get_repository_tree(owner: str,repository: str,branch: str) -> list[dict]:
     data = respone.json()
 
     return data.get("tree",[])
+
+
+def get_file_content(url: str) -> str:
+    response = httpx.get(url, timeout=10)
+
+    response.raise_for_status()
+
+    data = response.json()
+
+    if data.get("encoding") != "base64":
+        raise ValueError("Unsupported GitHub file encoding")
+
+    content = base64.b64decode(data["content"])
+
+    return content.decode("utf-8", errors="replace")
     

@@ -37,6 +37,20 @@ IGNORED_EXTENSIONS = {
     ".so",
     ".bin",
 }
+IMPORTANT_FILES = {
+    "README.md",
+    "README",
+    "package.json",
+    "requirements.txt",
+    "pyproject.toml",
+    "Cargo.toml",
+    "go.mod",
+    "pom.xml",
+    "build.gradle",
+    "Dockerfile",
+    "docker-compose.yml",
+    ".env.example",
+}
 
 MAX_FILE_SIZE = 500 * 1024
 
@@ -70,3 +84,8 @@ def filter_repository_tree(tree: list[dict]) -> list[dict]:
         for file in tree
         if should_include_file(file)
     ]
+
+def is_important_file(path: str) -> bool:
+    filename = PurePosixPath(path).name
+
+    return filename in IMPORTANT_FILES

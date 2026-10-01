@@ -20,3 +20,10 @@ class RepositoryRepresentation(BaseModel):
     default_branch: str
     language: str | None = None
     files: list[FileRepresentation]
+
+class RepositorySummary(BaseModel):
+    overview: str
+    architecture: str
+    main_components: list[str]
+    technologies: list[str]
+    entry_points: list[str]

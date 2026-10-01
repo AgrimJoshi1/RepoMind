@@ -1,5 +1,7 @@
 from fastapi import APIRouter, HTTPException
-
+from app.services.analysis_service import (
+    analyze_repository as analyze_repository_service,
+)
 from app.models.repository import RepositoryRequest
 from app.services.file_filter import filter_repository_tree
 from app.services.github_service import (
@@ -39,8 +41,11 @@ def analyze_repository(request: RepositoryRequest):
             metadata,
             filtered_tree,
         )
+        summary = analyze_repository_service(repository)
 
-        return repository
+        return {
+            "summary": summary,
+        }
 
     except ValueError as error:
         raise HTTPException(

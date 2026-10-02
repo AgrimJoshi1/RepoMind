@@ -27,7 +27,8 @@ def build_analysis_context(
 
         line += ")"
 
-        if file.content:
+        # Only send important file contents to Gemini
+        if file.content and file.important:
             line += f"\n  Content:\n{file.content}"
 
         lines.append(line)

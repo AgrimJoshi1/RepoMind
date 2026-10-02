@@ -2,7 +2,18 @@ import httpx
 from urllib.parse import urlparse
 import base64
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+
 GITHUB_API_URL = "https://api.github.com"
+HEADERS = {}
+
+if GITHUB_TOKEN:
+    HEADERS["Authorization"] = f"Bearer {GITHUB_TOKEN}"
 
 def parse_github_url(github_url:str)->tuple[str,str]:
     parsed_url = urlparse(github_url)
@@ -30,8 +41,13 @@ def parse_github_url(github_url:str)->tuple[str,str]:
 def get_repository_metadata(owner:str,repository:str)->dict:
     url = f"{GITHUB_API_URL}/repos/{owner}/{repository}"
 
-    response = httpx.get(url,timeout=10)
-
+    response = httpx.get(url, headers=HEADERS, timeout=10)
+    
+    if response.status_code == 403:
+        raise ValueError(
+        "GitHub API rate limit exceeded. Please try again later."
+        )
+    
     if response.status_code == 404:
         raise ValueError("Github repository not found")
 
@@ -53,7 +69,7 @@ def get_repository_tree(owner: str,repository: str,branch: str) -> list[dict]:
         f"{owner}/{repository}/git/trees/{branch}"
         "?recursive=1"
     )
-    respone = httpx.get(url,timeout = 20)
+    respone = httpx.get(url, headers=HEADERS, timeout=20)
 
     if respone.status_code == 404:
         raise ValueError("Repository tree not found")
@@ -66,7 +82,7 @@ def get_repository_tree(owner: str,repository: str,branch: str) -> list[dict]:
 
 
 def get_file_content(url: str) -> str:
-    response = httpx.get(url, timeout=10)
+    response = httpx.get(url, headers=HEADERS, timeout=10)
 
     response.raise_for_status()
 

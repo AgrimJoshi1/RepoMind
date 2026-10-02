@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RepoMind — Understand any GitHub repo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="#/">REPOMIND</a>
+  <a class="nav-link" href="#/about" data-nav="about">ABOUT</a>
+</header>
+<main class="wrap">
+  <!-- Route: #/ -->
+  <div id="view-home" data-view="home">
+    <section class="hero">
+      <h1>Understand<br>any <mark>GitHub</mark> repo.</h1>
+      <p class="sub">Paste a repository. Get the explanation.</p>
+      <form id="analyze-form" class="analyze" novalidate>
+        <label class="sr" for="repo-url">GitHub repository URL</label>
+        <div class="field">
+          <span class="field-icon" aria-hidden="true">🔗</span>
+          <input id="repo-url" name="github_url" type="url" placeholder="https://github.com/user/repository" autocomplete="off" spellcheck="false">
+        </div>
+        <button id="analyze-btn" class="btn" type="submit">ANALYZE</button>
+      </form>
+      <div id="status" aria-live="polite"></div>
+    </section>
+    <section id="result" aria-label="Repository analysis"></section>
+  </div>
+
+  <!-- Route: #/about -->
+  <div id="view-about" data-view="about" hidden>
+    <h1>About<br><mark>RepoMind</mark></h1>
+    <article class="panel">
+      <div class="panel-head"><span>WHAT IT IS</span></div>
+      <div class="panel-body doc">
+        <p>RepoMind explains public GitHub repositories. Paste a URL and the backend reads the repo, then writes a plain-language breakdown: what it does, how it is built, and where things live.</p>
+        <h3>HOW IT WORKS</h3>
+        <ul><li>Paste a public repository URL</li><li>Click ANALYZE</li><li>Read the explanation</li><li>Copy it</li></ul>
+        <a class="btn" href="#/">TRY IT</a>
+      </div>
+    </article>
+  </div>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

@@ -46,3 +46,10 @@ GitHub Repository URL
         │
         ▼
 Readable Repository Analysis
+
+## 👥 Built By
+
+RepoMind was built by:
+
+* **Agrim Joshi** — [GitHub](https://github.com/AgrimJoshi1)
+* **Ayush Sharma** — [GitHub](https://github.com/thisIsAyushFr)

@@ -21,12 +21,13 @@ from app.services.analysis_service import (
 from app.services.architecture_service import (
     analyze_architecture,
 )
+from app.models.analysis import AnalysisResponse
 
 
 router = APIRouter()
 
 
-@router.post("/analyze")
+@router.post("/analyze", response_model=AnalysisResponse)
 def analyze_repository(request: RepositoryRequest):
 
     try:
@@ -61,6 +62,13 @@ def analyze_repository(request: RepositoryRequest):
         )
 
         return {
+            "repository": {
+                "name": metadata["name"],
+                "full_name": metadata["full_name"],
+                "description": metadata.get("description"),
+                "default_branch": metadata["default_branch"],
+                "language": metadata.get("language"),
+            },
             "summary": summary,
             "architecture": architecture,
         }
